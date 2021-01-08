@@ -1,11 +1,13 @@
 "use strict";
 
 import * as express from "express";
+import { profile } from "winston";
 import * as error from "../server/error";
 import { onlyLoggedIn } from "../token/passport";
 import * as token from "../token/service";
 import * as user from "./service";
 import { ISessionRequest } from "./service";
+import * as profileService from "../profile/service"
 
 /**
  * Modulo de seguridad, login/logout, cambio de contraseñas, etc
@@ -283,12 +285,14 @@ async function getAll(req: ISessionRequest, res: express.Response) {
  */
 async function current(req: ISessionRequest, res: express.Response) {
   const response = await user.findById(req.user.user_id);
+  const profileId = (await profileService.findForUser(req.user.user_id))._id
   return res.json({
     id: response.id,
     name: response.name,
     login: response.login,
     permissions: response.permissions,
-    following: response.following
+    following: response.following,
+    profile: profileId
   });
 }
 

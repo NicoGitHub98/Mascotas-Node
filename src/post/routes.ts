@@ -5,10 +5,12 @@ import * as error from "../server/error";
 import { onlyLoggedIn } from "../token/passport";
 import { ISessionRequest } from "../user/service";
 import * as postService from "./service";
+import * as imageService from "../image/service";
 
 export function initModule(app: express.Express) {
   app.route("/v1/allPosts").get(onlyLoggedIn, getAllPosts)
   app.route("/v1/myPosts").get(onlyLoggedIn, myPosts)
+  app.route("/v1/:userId/posts").get(onlyLoggedIn, getPostsOfUser)
   app.route("/v1/publish").post(onlyLoggedIn, publish)
   app.route("/v1/:postId/update").put(onlyLoggedIn, updatePost)
   app.route("/v1/:postId/delete").delete(onlyLoggedIn, deletePost)
@@ -120,9 +122,10 @@ async function myPosts(req: ISessionRequest, res: express.Response) {
  */
 async function getMyFeed(req: ISessionRequest, res: express.Response) {
     const result = await postService.findMyFeedPosts(req.user.user_id);
-    res.json({
-      posts: result
-    });
+    for (const post of result) {
+      post.picture = (await imageService.findByID(post.picture)).image
+    }
+    res.json(result);
 }
 
 /**
@@ -279,4 +282,17 @@ async function dislikePost(req: ISessionRequest, res: express.Response) {
       created: result.created,
       enabled: result.enabled,
   });
+}
+
+async function getPostsOfUser(req: ISessionRequest, res: express.Response) {
+  const result = await postService.findAllByUserId(req.params.userId);
+  console.log("El result es:",result)
+  for (const post of result) {
+    if(post.picture){
+      console.log("Entra a la imagen")
+      post.picture = (await imageService.findByID(post.picture)).image
+      console.log("La convierte chidori")
+    } 
+  }
+  res.json(result);
 }

@@ -7,7 +7,7 @@ import * as provinces from "../provinces/service";
 import { IUser, User } from "../user/user";
 import * as imageService from "../image/service"
 
-async function findForUser(userId: string): Promise<IProfile> {
+export async function findForUser(userId: string): Promise<IProfile> {
   return await Profile.findOne({
     user: mongoose.Types.ObjectId(escape(userId)),
     enabled: true
@@ -142,7 +142,7 @@ export async function updateProfilePicture(userId: string, imageId: string): Pro
   }
 }
 
-export async function findProfileByQueryName(searchParameter: string): Promise<IProfile[]> {
+export async function findProfileByQueryName(searchParameter: string, userId: string): Promise<IProfile[]> {
   try {
       let users = await User.find({ name: new RegExp('^.*('+searchParameter+').*$', "i") }).exec();
       if (!users) {
@@ -155,7 +155,9 @@ export async function findProfileByQueryName(searchParameter: string): Promise<I
         $or: [
           {name: new RegExp('^.*('+searchParameter+').*$', "i")},
           {user: {$in: usersIds}}
-        ]
+        ],
+        //No tengo en cuenta user actual, para que cuando busque no se encuentre a si mismo
+        user: {$ne: mongoose.Types.ObjectId(userId)}
       })/*.populate("user")*/.exec();
       if (!users || !profiles) {
           throw error.newError(error.ERROR_NOT_FOUND, "El usuario/perfil no se encuentra");
@@ -172,5 +174,17 @@ export async function findProfileByQueryName(searchParameter: string): Promise<I
       return Promise.resolve(profiles);
   } catch (err) {
       return Promise.reject(err);
+  }
+}
+
+export async function findProfileById(profileId: string): Promise<IProfile> {
+  try {
+    let profile = await Profile.findOne({ _id: profileId}).exec();
+    if (!profile) {
+      throw error.newError(error.ERROR_NOT_FOUND, "El perfil no se encuentra");
+  }
+    return Promise.resolve(profile)
+  } catch (error) {
+    return Promise.reject(error)
   }
 }

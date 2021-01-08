@@ -45,14 +45,13 @@ export async function findById(postId: string): Promise<IPost> {
 
 export async function findAllByUserId(userId: string): Promise<IPost[]> {
     try {
-        console.log("Por ejecutar find")
         const posts = await Post.find({ user: mongoose.Types.ObjectId.createFromHexString(userId)}).exec();
         if (!posts) {
-            throw error.ERROR_NOT_FOUND;
+            console.log("No hay posts")
         }
-        console.log("find ejecutado, resultado es:",posts)
         return Promise.resolve(posts);
     } catch (err) {
+        console.log("Error en findAllByUserId:",err)
         return Promise.reject(err);
     }
 }

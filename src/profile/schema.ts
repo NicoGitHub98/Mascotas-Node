@@ -41,7 +41,8 @@ export let ProfileSchema = new mongoose.Schema({
   },
   picture: {
     type: String,
-    ref: "Image"
+    ref: "Image",
+    default: "53a05046-c496-43d9-804b-b9a275a51da2"
   },
   valid: {
     type: Boolean,

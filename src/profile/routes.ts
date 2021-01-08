@@ -6,6 +6,7 @@ import { onlyLoggedIn } from "../token/passport";
 import { ISessionRequest } from "../user/service";
 import * as profileService from "./service";
 import * as postService from "../post/service";
+import * as imageService from "../image/service"
 
 /**
  * Modulo de perfiles de usuario
@@ -15,7 +16,7 @@ export function initModule(app: express.Express) {
                           .post(onlyLoggedIn, updateBasicInfo);
   app.route("/v1/profile/find").get(onlyLoggedIn, findProfileByName)
     
-  app.route("/v1/profile/:userId").get(onlyLoggedIn, seeProfile)
+  app.route("/v1/profile/:profileId").get(onlyLoggedIn, seeProfile)
 
 }
 
@@ -103,18 +104,21 @@ async function updateBasicInfo(req: ISessionRequest, res: express.Response) {
 }
 
 async function seeProfile(req: ISessionRequest, res: express.Response) {
-  const profile = await profileService.read(req.params.userId);
-  const posts = await postService.findAllByUserId(req.params.userId);
+  const profile = await profileService.findProfileById(req.params.profileId);
+  const posts = await postService.findAllByUserId(profile.user.toString());
+  profile.picture = (await imageService.findByID(profile.picture)).image
   res.json({
     name: profile.name,
     phone: profile.phone,
+    address: profile.address,
     province: profile.province,
     picture: profile.picture,
-    posts: posts
+    posts: posts,
+    user: profile.user
   });
 }
 
 async function findProfileByName(req: ISessionRequest, res: express.Response) {
-  const profiles = await profileService.findProfileByQueryName(req.query.name.toString());
+  const profiles = await profileService.findProfileByQueryName(req.query.name.toString(), req.user.user_id);
   res.json(profiles);
 }
