@@ -16,6 +16,21 @@ export async function findByCurrentUser(userId: string): Promise<Array<IPet>> {
   }
 }
 
+export async function getById(petId: string): Promise<IPet> {
+  try {
+    const result = await Pet.findOne({
+      _id: petId,
+      enabled: true
+    }).exec();
+    if (!result) {
+      throw error.ERROR_NOT_FOUND;
+    }
+    return Promise.resolve(result);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+}
+
 export async function findById(userId: string, petId: string): Promise<IPet> {
   try {
     const result = await Pet.findOne({

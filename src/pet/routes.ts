@@ -21,6 +21,9 @@ export function initModule(app: express.Express) {
     .get(onlyLoggedIn, readById)
     .post(onlyLoggedIn, updateById)
     .delete(onlyLoggedIn, removeById);
+  app
+    .route("/v1/pets/:petId")
+    .get(onlyLoggedIn,getById)
 }
 
 
@@ -94,6 +97,29 @@ async function create(req: ISessionRequest, res: express.Response) {
   });
 }
 
+
+/**
+ * @api {get} /v1/pet/:petId Buscar Mascota
+ * @apiName Buscar Mascota
+ * @apiGroup Mascotas
+ *
+ * @apiDescription Busca una mascota por id.
+ *
+ * @apiUse IMascotaResponse
+ *
+ * @apiUse AuthHeader
+ * @apiUse ParamValidationErrors
+ * @apiUse OtherErrors
+ */
+async function getById(req: ISessionRequest, res: express.Response) {
+  const result = await service.getById(req.params.petId);
+  res.json({
+    id: result.id,
+    name: result.name,
+    description: result.description,
+    birthDate: result.birthDate
+  });
+}
 
 /**
  * @api {get} /v1/pet/:petId Buscar Mascota
