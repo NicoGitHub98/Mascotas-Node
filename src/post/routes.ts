@@ -11,12 +11,29 @@ export function initModule(app: express.Express) {
   app.route("/v1/allPosts").get(onlyLoggedIn, getAllPosts)
   app.route("/v1/myPosts").get(onlyLoggedIn, myPosts)
   app.route("/v1/:userId/posts").get(onlyLoggedIn, getPostsOfUser)
-  app.route("/v1/publish").post(onlyLoggedIn, publish)
-  app.route("/v1/:postId/update").put(onlyLoggedIn, updatePost)
-  app.route("/v1/:postId/delete").delete(onlyLoggedIn, deletePost)
+  app.route("/v1/posts/publish").post(onlyLoggedIn, publish)
+  app.route("/v1/posts/:postId").get(onlyLoggedIn, readById)
+  app.route("/v1/posts/:postId/update").put(onlyLoggedIn, updatePost)
+  app.route("/v1/posts/:postId/delete").delete(onlyLoggedIn, deletePost)
   app.route("/v1/myFeed").get(onlyLoggedIn, getMyFeed)
-  app.route("/v1/:postId/like").post(onlyLoggedIn, likePost)
-  app.route("/v1/:postId/dislike").post(onlyLoggedIn, dislikePost)
+  app.route("/v1/posts/:postId/like").post(onlyLoggedIn, likePost)
+  app.route("/v1/posts/:postId/dislike").post(onlyLoggedIn, dislikePost)
+}
+
+async function readById(req: ISessionRequest, res: express.Response) {
+  const result = await postService.findById(req.params.postId);
+  const imagen = (await imageService.findByID(result.picture)).image
+  res.json({
+    title: result.title,
+    description: result.description,
+    picture: imagen,
+    likes: result.likes,
+    pets: result.pets,
+    user: result.user,
+    updated: result.updated,
+    created: result.created,
+    enabled: result.enabled,
+});
 }
 
 /**
