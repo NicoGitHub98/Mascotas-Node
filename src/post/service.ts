@@ -72,7 +72,9 @@ export async function findMyFeedPosts(userId: string): Promise<IPost[]> {
 
 export async function publish(body: newPost): Promise<IPost> {
     try {
-        body.picture = (await imageService.create({image: body.picture})).id
+        if(body.picture){
+            body.picture = (await imageService.create({image: body.picture})).id
+        }
 
         const post = <IPost>new Post();
         post.title = body.title;
@@ -117,14 +119,14 @@ export async function updatePost(body: newPost, postId: string): Promise<IPost> 
     }
 }
 
-export async function deletePost(userId: string, postId: string): Promise<IPost> {
+export async function deletePost(userId: string, postId: string): Promise<any> {
     try {
-        const post = await Post.findOne({ 
+        const post = await Post.deleteOne({ 
             _id: postId,
             user: mongoose.Types.ObjectId.createFromHexString(userId),
         }).exec();
-        post.enabled = false;
-        await post.save();
+        //post.enabled = false;
+        //await post.save();
         return Promise.resolve(post);
     } catch (err) {
         return Promise.reject(err);

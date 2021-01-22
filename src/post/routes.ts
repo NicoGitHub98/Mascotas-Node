@@ -24,6 +24,7 @@ async function readById(req: ISessionRequest, res: express.Response) {
   const result = await postService.findById(req.params.postId);
   const imagen = (await imageService.findByID(result.picture)).image
   res.json({
+    id: result._id,
     title: result.title,
     description: result.description,
     picture: imagen,
