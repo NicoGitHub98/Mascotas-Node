@@ -20,6 +20,10 @@ export interface newPost {
     pets: string[],
 }
 
+export interface Post{
+    
+}
+
 export function findAll(): Promise<IPost[]> {
     return new Promise<IPost[]>((resolve, reject) => {
         Post.find({},

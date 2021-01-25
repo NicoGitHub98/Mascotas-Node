@@ -18,6 +18,8 @@ export function initModule(app: express.Express) {
     
   app.route("/v1/profile/:profileId").get(onlyLoggedIn, seeProfile)
 
+  app.route("/v1/profiles/:userId").get(onlyLoggedIn, getProfileByUserId)
+
 }
 
 /**
@@ -121,4 +123,9 @@ async function seeProfile(req: ISessionRequest, res: express.Response) {
 async function findProfileByName(req: ISessionRequest, res: express.Response) {
   const profiles = await profileService.findProfileByQueryName(req.query.name.toString(), req.user.user_id);
   res.json(profiles);
+}
+
+async function getProfileByUserId(req: ISessionRequest, res: express.Response) {
+  const profile = await profileService.findForUser(req.params.userId);
+  res.json(profile);
 }

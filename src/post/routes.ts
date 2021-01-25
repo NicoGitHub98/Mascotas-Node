@@ -141,7 +141,7 @@ async function myPosts(req: ISessionRequest, res: express.Response) {
 async function getMyFeed(req: ISessionRequest, res: express.Response) {
     const result = await postService.findMyFeedPosts(req.user.user_id);
     for (const post of result) {
-      post.picture = (await imageService.findByID(post.picture)).image
+      if(post.picture) post.picture = (await imageService.findByID(post.picture)).image
     }
     res.json(result);
 }
