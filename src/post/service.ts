@@ -74,6 +74,20 @@ export async function findMyFeedPosts(userId: string): Promise<IPost[]> {
     }
 }
 
+export async function findPostByLikeAmount(likes: number): Promise<IPost[]> {
+    try {
+        const posts = await Post.find({ "likesQuantity": {"$gt": likes} }).exec();
+        console.log("Los posts populares son: ",posts)
+        if (!posts) {
+            throw error.ERROR_NOT_FOUND;
+        }
+
+        return Promise.resolve(posts);
+    } catch (err) {
+        return Promise.reject(err);
+    }
+}
+
 export async function publish(body: newPost): Promise<IPost> {
     try {
         if(body.picture){

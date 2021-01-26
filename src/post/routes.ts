@@ -16,6 +16,7 @@ export function initModule(app: express.Express) {
   app.route("/v1/posts/:postId/update").put(onlyLoggedIn, updatePost)
   app.route("/v1/posts/:postId/delete").delete(onlyLoggedIn, deletePost)
   app.route("/v1/myFeed").get(onlyLoggedIn, getMyFeed)
+  app.route("/v1/explore").get(onlyLoggedIn,getPopularPosts)
   app.route("/v1/posts/:postId/like").post(onlyLoggedIn, likePost)
   app.route("/v1/posts/:postId/dislike").post(onlyLoggedIn, dislikePost)
 }
@@ -304,12 +305,18 @@ async function dislikePost(req: ISessionRequest, res: express.Response) {
 
 async function getPostsOfUser(req: ISessionRequest, res: express.Response) {
   const result = await postService.findAllByUserId(req.params.userId);
-  console.log("El result es:",result)
   for (const post of result) {
     if(post.picture){
-      console.log("Entra a la imagen")
       post.picture = (await imageService.findByID(post.picture)).image
-      console.log("La convierte chidori")
+    } 
+  }
+  res.json(result);
+}
+async function getPopularPosts(req: ISessionRequest, res: express.Response) {
+  const result = await postService.findPostByLikeAmount(Math.abs(parseInt(req.query.likes.toString())));
+  for (const post of result) {
+    if(post.picture){
+      post.picture = (await imageService.findByID(post.picture)).image
     } 
   }
   res.json(result);

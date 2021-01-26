@@ -12,6 +12,7 @@ export interface IPost extends mongoose.Document {
   updated: Number;
   created: Number;
   enabled: Boolean;
+  likesQuantity: Number,
   like: Function;
   unlike: Function;
 }
@@ -41,6 +42,10 @@ export let PostSchema = new mongoose.Schema({
         }
       ],
       default: []
+  },
+  likesQuantity: {
+    type: Number,
+    default: 0
   },
   pets: {
     type: [
@@ -73,6 +78,7 @@ export let PostSchema = new mongoose.Schema({
 
 PostSchema.methods.like = function (user_id: mongoose.Schema.Types.ObjectId) {
   this.likes.push(user_id);
+  this.likesQuantity+=1;
 
   this.updated = Date.now();
 };
@@ -81,6 +87,7 @@ PostSchema.methods.unlike = function (user_id: mongoose.Schema.Types.ObjectId) {
   var index = this.likes.indexOf(user_id);
   if (index > -1) {
     this.likes.splice(index, 1);
+    this.likesQuantity-=1;
   }
 
   this.updated = Date.now();
