@@ -295,7 +295,7 @@ export async function follow(myUserId: string ,toFollowUserId: string): Promise<
         if (!myUser) {
             throw error.newError(error.ERROR_NOT_FOUND, "El usuario no se encuentra");
         }
-        let otherUser = await User.findOne({ _id: toFollowUserId }).exec();
+        let otherUser = await User.findOne({ _id: toFollowUserId, enabled:true }).exec();
         if (!otherUser) {
             throw error.newError(error.ERROR_NOT_FOUND, "El usuario no se encuentra");
         }
@@ -326,7 +326,7 @@ export async function unfollow(myUserId: string ,toUnfollowUserId: string): Prom
         if (!myUser) {
             throw error.newError(error.ERROR_NOT_FOUND, "El usuario no se encuentra");
         }
-        let otherUser = await User.findOne({ _id: toUnfollowUserId }).exec();
+        let otherUser = await User.findOne({ _id: toUnfollowUserId, enabled: true}).exec();
         if (!otherUser) {
             throw error.newError(error.ERROR_NOT_FOUND, "El usuario no se encuentra");
         }
@@ -352,7 +352,7 @@ export async function unfollow(myUserId: string ,toUnfollowUserId: string): Prom
 
 export async function getFollowing(userId: string): Promise<mongoose.Schema.Types.ObjectId[]> {
     try {
-        let user = await User.findOne({ _id: userId }).exec();
+        let user = await User.findOne({ _id: userId, enabled: true }).exec();
         if (!user) {
             throw error.newError(error.ERROR_NOT_FOUND, "El usuario no se encuentra");
         }

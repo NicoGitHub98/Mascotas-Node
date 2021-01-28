@@ -36,7 +36,7 @@ export function findAll(): Promise<IPost[]> {
 
 export async function findById(postId: string): Promise<IPost> {
     try {
-        const post = await Post.findOne({ _id: postId }).exec();
+        const post = await Post.findOne({ _id: postId, enabled: true }).exec();
         if (!post) {
             throw error.ERROR_NOT_FOUND;
         }
@@ -49,7 +49,7 @@ export async function findById(postId: string): Promise<IPost> {
 
 export async function findAllByUserId(userId: string): Promise<IPost[]> {
     try {
-        const posts = await Post.find({ user: mongoose.Types.ObjectId.createFromHexString(userId)}).exec();
+        const posts = await Post.find({ user: mongoose.Types.ObjectId.createFromHexString(userId), enabled: true}).exec();
         if (!posts) {
             console.log("No hay posts")
         }
@@ -63,7 +63,7 @@ export async function findAllByUserId(userId: string): Promise<IPost[]> {
 export async function findMyFeedPosts(userId: string): Promise<IPost[]> {
     try {
         const following = await userService.getFollowing(userId);
-        const posts = await Post.find({ user: { $in: following}}).exec();
+        const posts = await Post.find({ user: { $in: following}, enabled: true}).exec();
         if (!posts) {
             throw error.ERROR_NOT_FOUND;
         }
@@ -76,7 +76,7 @@ export async function findMyFeedPosts(userId: string): Promise<IPost[]> {
 
 export async function findPostByLikeAmount(likes: number): Promise<IPost[]> {
     try {
-        const posts = await Post.find({ "likesQuantity": {"$gt": likes} }).exec();
+        const posts = await Post.find({ "likesQuantity": {"$gt": likes}, enabled: true }).exec();
         console.log("Los posts populares son: ",posts)
         if (!posts) {
             throw error.ERROR_NOT_FOUND;
@@ -134,7 +134,8 @@ export async function updatePost(body: newPost, postId: string): Promise<IPost> 
         body = await validateBody(body)
         const post = await Post.findOne({ 
             _id: postId, 
-            user: mongoose.Types.ObjectId.createFromHexString(body.user_id)
+            user: mongoose.Types.ObjectId.createFromHexString(body.user_id),
+            enabled: true
         }).exec();
 
         if(body.picture){
@@ -161,12 +162,13 @@ export async function updatePost(body: newPost, postId: string): Promise<IPost> 
 
 export async function deletePost(userId: string, postId: string): Promise<any> {
     try {
-        const post = await Post.deleteOne({ 
+        const post = await Post.findOne({ 
             _id: postId,
             user: mongoose.Types.ObjectId.createFromHexString(userId),
+            enabled: true
         }).exec();
-        //post.enabled = false;
-        //await post.save();
+        post.enabled = false;
+        await post.save();
         return Promise.resolve(post);
     } catch (err) {
         return Promise.reject(err);
@@ -177,7 +179,7 @@ export async function like(userId: string, postId: string): Promise<IPost> {
     try {
         const userIdAsMongooseId =  mongoose.Types.ObjectId(userId)
 
-        const post = await Post.findOne({ _id: postId }).exec();
+        const post = await Post.findOne({ _id: postId, enabled: true }).exec();
         
         var index = post.likes.indexOf(mongoose.Types.ObjectId(userIdAsMongooseId));
         if (index > -1) {
@@ -197,7 +199,7 @@ export async function dislike(userId: string, postId: string): Promise<IPost> {
     try {
         const userIdAsMongooseId =  mongoose.Types.ObjectId(userId)
 
-        const post = await Post.findOne({ _id: postId }).exec();
+        const post = await Post.findOne({ _id: postId, enabled: true }).exec();
         
         var index = post.likes.indexOf(mongoose.Types.ObjectId(userIdAsMongooseId));
         if (index > -1) {

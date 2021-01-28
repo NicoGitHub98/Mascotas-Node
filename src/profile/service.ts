@@ -144,7 +144,7 @@ export async function updateProfilePicture(userId: string, imageId: string): Pro
 
 export async function findProfileByQueryName(searchParameter: string, userId: string): Promise<IProfile[]> {
   try {
-      let users = await User.find({ name: new RegExp('^.*('+searchParameter+').*$', "i") }).exec();
+      let users = await User.find({ name: new RegExp('^.*('+searchParameter+').*$', "i"), enabled: true }).exec();
       if (!users) {
           throw error.newError(error.ERROR_NOT_FOUND, "El usuario no se encuentra");
       }
@@ -153,7 +153,7 @@ export async function findProfileByQueryName(searchParameter: string, userId: st
 
       let profiles = await Profile.find({ 
         $or: [
-          {name: new RegExp('^.*('+searchParameter+').*$', "i")},
+          {name: new RegExp('^.*('+searchParameter+').*$', "i"), enabled: true},
           {user: {$in: usersIds}}
         ],
         //No tengo en cuenta user actual, para que cuando busque no se encuentre a si mismo
@@ -179,7 +179,7 @@ export async function findProfileByQueryName(searchParameter: string, userId: st
 
 export async function findProfileById(profileId: string): Promise<IProfile> {
   try {
-    let profile = await Profile.findOne({ _id: profileId}).exec();
+    let profile = await Profile.findOne({ _id: profileId, enabled: true}).exec();
     if (!profile) {
       throw error.newError(error.ERROR_NOT_FOUND, "El perfil no se encuentra");
   }
