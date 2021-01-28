@@ -25,7 +25,7 @@ export function initModule(app: express.Express) {
 /**
  * @apiDefine IProfileResponse
  *
- * @apiSuccessExample {json} Perfil
+ * @apiSuccessExample {json} Perfil Respuesta
  *    {
  *      "name": "Nombre y Apellido",
  *      "phone": "Teléfono",
@@ -37,8 +37,8 @@ export function initModule(app: express.Express) {
  */
 
 /**
- * @api {get} /v1/profile Obtener Perfil
- * @apiName Obtener Perfil
+ * @api {get} /v1/profile Obtener mi Perfil
+ * @apiName Perfil Actual
  * @apiGroup Perfil
  *
  * @apiUse IProfileResponse
@@ -59,27 +59,13 @@ async function current(req: ISessionRequest, res: express.Response) {
 }
 
 /**
- * @apiDefine IProfileResponse
- *
- * @apiSuccessExample {json} Perfil
- *    {
- *      "name": "Nombre y Apellido",
- *      "phone": "Teléfono",
- *      "email": "Email",
- *      "address": "Dirección",
- *      "picture": "Id de imagen",
- *      "province": "Id de provincia",
- *    }
- */
-
-/**
  * @api {post} /v1/profile Actualizar Perfil
  * @apiName Actualizar Perfil
  * @apiGroup Perfil
  *
  * @apiDescription Actualiza los datos del perfil de usuario.
  *
- * @apiExample {json} Perfil
+ * @apiExample {json} Perfil Ejemplo
  *    {
  *      "name": "Nombre y Apellido",
  *      "phone": "Teléfono",
@@ -105,10 +91,33 @@ async function updateBasicInfo(req: ISessionRequest, res: express.Response) {
   });
 }
 
+/**
+ * @api {get} /v1/profile/:profileId Obtener Perfil
+ * @apiName Obtener Perfil
+ * @apiGroup Perfil
+ *
+ * @apiDescription Actualiza los datos del perfil de usuario.
+ * @apiParam {String} id ID del perfil
+ * 
+ * @apiExample {json} Perfil Ejemplo
+ *    {
+ *      "name": "Nombre y Apellido",
+ *      "phone": "Teléfono",
+ *      "email": "Email",
+ *      "address": "Dirección",
+ *      "province": "Id de provincia",
+ *    }
+ *
+ * @apiUse IProfileResponse
+ *
+ * @apiUse AuthHeader
+ * @apiUse OtherErrors
+ */
+
 async function seeProfile(req: ISessionRequest, res: express.Response) {
   const profile = await profileService.findProfileById(req.params.profileId);
   const posts = await postService.findAllByUserId(profile.user.toString());
-  profile.picture = (await imageService.findByID(profile.picture)).image
+  if(profile.picture)  profile.picture = (await imageService.findByID(profile.picture)).image
   res.json({
     name: profile.name,
     phone: profile.phone,
@@ -120,10 +129,58 @@ async function seeProfile(req: ISessionRequest, res: express.Response) {
   });
 }
 
+/**
+ * @api {get} /v1/profile/find?name= Buscar Perfiles
+ * @apiName Buscar Perfiles
+ * @apiGroup Perfil
+ *
+ * @apiDescription Busca Perfiles cuyo nombre, apellido o usuario concuerden con los del parametro de busqueda.
+ * @apiParam {String} name nombre, apellido o usuario del perfil
+ * 
+ * @apiExample {json} Perfiles Ejemplo
+ * [
+ *    {
+ *      "name": "Nombre y Apellido",
+ *      "phone": "Teléfono",
+ *      "email": "Email",
+ *      "address": "Dirección",
+ *      "province": "Id de provincia",
+ *    }
+ * ]
+ *
+ * @apiUse IProfileResponse
+ *
+ * @apiUse AuthHeader
+ * @apiUse OtherErrors
+ */
+
 async function findProfileByName(req: ISessionRequest, res: express.Response) {
   const profiles = await profileService.findProfileByQueryName(req.query.name.toString(), req.user.user_id);
   res.json(profiles);
 }
+
+/**
+ * @api {get} /v1/profiles/:userId Obtener Perfil por id de usuario
+ * @apiName Obtener Perfil por UserID
+ * @apiGroup Perfil
+ *
+ * @apiDescription Obtiene perfil cuyo usuario concuerde con el id provisto
+ * @apiParam {String} id ID de Usuario
+ * 
+ * @apiExample {json} Perfil Ejemplo
+ *    {
+ *      "name": "Nombre y Apellido",
+ *      "phone": "Teléfono",
+ *      "email": "Email",
+ *      "address": "Dirección",
+ *      "province": "Id de provincia",
+ *    }
+ *
+ * @apiUse IProfileResponse
+ *
+ * @apiUse AuthHeader
+ * @apiUse OtherErrors
+ */
 
 async function getProfileByUserId(req: ISessionRequest, res: express.Response) {
   const profile = await profileService.findForUser(req.params.userId);

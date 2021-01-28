@@ -20,8 +20,11 @@ Microservicio de Autentificación
 	
 - [Perfil](#perfil)
 	- [Actualizar Perfil](#actualizar-perfil)
+	- [Buscar Perfiles](#buscar-perfiles)
 	- [Guardar Imagen de Perfil](#guardar-imagen-de-perfil)
 	- [Obtener Perfil](#obtener-perfil)
+	- [Obtener Perfil por id de usuario](#obtener-perfil-por-id-de-usuario)
+	- [Obtener mi Perfil](#obtener-mi-perfil)
 	
 - [Provincias](#provincias)
 	- [Buscar Provincia](#buscar-provincia)
@@ -31,8 +34,13 @@ Microservicio de Autentificación
 	
 - [Publicaciones](#publicaciones)
 	- [Actualizar un post](#actualizar-un-post)
+	- [Quitar like a un post](#quitar-like-a-un-post)
 	- [Eliminar un post](#eliminar-un-post)
+	- [Dar like a un post](#dar-like-a-un-post)
 	- [Obtener Mis Posteos](#obtener-mis-posteos)
+	- [Obtener Post](#obtener-post)
+	- [Obtener Todos los Posteos populares](#obtener-todos-los-posteos-populares)
+	- [Obtener Todos los Posteos de un usuario](#obtener-todos-los-posteos-de-un-usuario)
 	- [Obtener Los Posteos de mis seguidos](#obtener-los-posteos-de-mis-seguidos)
 	- [Obtener Todos los Posteos de la Red](#obtener-todos-los-posteos-de-la-red)
 	- [Publicar un post](#publicar-un-post)
@@ -605,7 +613,7 @@ HTTP/1.1 500 Internal Server Error
 
 ### Examples
 
-Perfil
+Perfil Ejemplo
 
 ```
 {
@@ -625,7 +633,7 @@ Authorization=bearer {token}
 
 ### Success Response
 
-Perfil
+Perfil Respuesta
 
 ```
 {
@@ -659,6 +667,75 @@ HTTP/1.1 400 Bad Request
      ...
   ]
 }
+```
+500 Server Error
+
+```
+HTTP/1.1 500 Internal Server Error
+{
+   "error" : "Not Found"
+}
+```
+## <a name='buscar-perfiles'></a> Buscar Perfiles
+[Back to top](#top)
+
+<p>Busca Perfiles cuyo nombre, apellido o usuario concuerden con los del parametro de busqueda.</p>
+
+	GET /v1/profile/find?name=
+
+
+
+
+
+### Parameter Parameters
+
+| Name     | Type       | Description                           |
+|:---------|:-----------|:--------------------------------------|
+|  name | String | <p>nombre, apellido o usuario del perfil</p>|
+### Examples
+
+Perfiles Ejemplo
+
+```
+[
+   {
+     "name": "Nombre y Apellido",
+     "phone": "Teléfono",
+     "email": "Email",
+     "address": "Dirección",
+     "province": "Id de provincia",
+   }
+]
+```
+Header Autorización
+
+```
+Authorization=bearer {token}
+```
+
+
+### Success Response
+
+Perfil Respuesta
+
+```
+{
+  "name": "Nombre y Apellido",
+  "phone": "Teléfono",
+  "email": "Email",
+  "address": "Dirección",
+  "picture": "Id de imagen",
+  "province": "Id de provincia",
+}
+```
+
+
+### Error Response
+
+401 Unauthorized
+
+```
+HTTP/1.1 401 Unauthorized
 ```
 500 Server Error
 
@@ -736,6 +813,140 @@ HTTP/1.1 500 Internal Server Error
 ## <a name='obtener-perfil'></a> Obtener Perfil
 [Back to top](#top)
 
+<p>Actualiza los datos del perfil de usuario.</p>
+
+	GET /v1/profile/:profileId
+
+
+
+
+
+### Parameter Parameters
+
+| Name     | Type       | Description                           |
+|:---------|:-----------|:--------------------------------------|
+|  id | String | <p>ID del perfil</p>|
+### Examples
+
+Perfil Ejemplo
+
+```
+{
+  "name": "Nombre y Apellido",
+  "phone": "Teléfono",
+  "email": "Email",
+  "address": "Dirección",
+  "province": "Id de provincia",
+}
+```
+Header Autorización
+
+```
+Authorization=bearer {token}
+```
+
+
+### Success Response
+
+Perfil Respuesta
+
+```
+{
+  "name": "Nombre y Apellido",
+  "phone": "Teléfono",
+  "email": "Email",
+  "address": "Dirección",
+  "picture": "Id de imagen",
+  "province": "Id de provincia",
+}
+```
+
+
+### Error Response
+
+401 Unauthorized
+
+```
+HTTP/1.1 401 Unauthorized
+```
+500 Server Error
+
+```
+HTTP/1.1 500 Internal Server Error
+{
+   "error" : "Not Found"
+}
+```
+## <a name='obtener-perfil-por-id-de-usuario'></a> Obtener Perfil por id de usuario
+[Back to top](#top)
+
+<p>Obtiene perfil cuyo usuario concuerde con el id provisto</p>
+
+	GET /v1/profiles/:userId
+
+
+
+
+
+### Parameter Parameters
+
+| Name     | Type       | Description                           |
+|:---------|:-----------|:--------------------------------------|
+|  id | String | <p>ID de Usuario</p>|
+### Examples
+
+Perfil Ejemplo
+
+```
+{
+  "name": "Nombre y Apellido",
+  "phone": "Teléfono",
+  "email": "Email",
+  "address": "Dirección",
+  "province": "Id de provincia",
+}
+```
+Header Autorización
+
+```
+Authorization=bearer {token}
+```
+
+
+### Success Response
+
+Perfil Respuesta
+
+```
+{
+  "name": "Nombre y Apellido",
+  "phone": "Teléfono",
+  "email": "Email",
+  "address": "Dirección",
+  "picture": "Id de imagen",
+  "province": "Id de provincia",
+}
+```
+
+
+### Error Response
+
+401 Unauthorized
+
+```
+HTTP/1.1 401 Unauthorized
+```
+500 Server Error
+
+```
+HTTP/1.1 500 Internal Server Error
+{
+   "error" : "Not Found"
+}
+```
+## <a name='obtener-mi-perfil'></a> Obtener mi Perfil
+[Back to top](#top)
+
 
 
 	GET /v1/profile
@@ -753,7 +964,7 @@ Authorization=bearer {token}
 
 ### Success Response
 
-Perfil
+Perfil Respuesta
 
 ```
 {
@@ -1027,6 +1238,17 @@ HTTP/1.1 500 Internal Server Error
 
 ### Examples
 
+Post
+
+```
+{
+  "title": "Titulo del Post",
+  "description": "Descripcion del Post",
+  "picture": "Imagen del post (base64)",
+  "pets": [Id mascota Etiquetada],
+  "user": "Id del usuario que postea"
+}
+```
 Header Autorización
 
 ```
@@ -1047,6 +1269,80 @@ Post
   "pets": [Id de macota etiquetada],
   "user": "Id del user autor",
   "updated": "Fecha Actualizacion";
+  "created": "Fecha creacion";
+  "enabled": "Baja Logica";
+}
+```
+
+
+### Error Response
+
+401 Unauthorized
+
+```
+HTTP/1.1 401 Unauthorized
+```
+400 Bad Request
+
+```
+HTTP/1.1 400 Bad Request
+{
+   "messages" : [
+     {
+       "path" : "{Nombre de la propiedad}",
+       "message" : "{Motivo del error}"
+     },
+     ...
+  ]
+}
+```
+500 Server Error
+
+```
+HTTP/1.1 500 Internal Server Error
+{
+   "error" : "Not Found"
+}
+```
+## <a name='quitar-like-a-un-post'></a> Quitar like a un post
+[Back to top](#top)
+
+
+
+	POST /v1/posts/:postId/dislike
+
+
+
+
+
+### Parameter Parameters
+
+| Name     | Type       | Description                           |
+|:---------|:-----------|:--------------------------------------|
+|  postId |  | <p>{string} ID del Post</p>|
+### Examples
+
+Header Autorización
+
+```
+Authorization=bearer {token}
+```
+
+
+### Success Response
+
+Post
+
+```
+{
+  "title": "Titulo del Post",
+  "description": "Descripcion del post",
+  "picture": "Imagen del post",
+  "likes": [Id usuario],
+  "pets": [Id de macota etiquetada],
+  "user": "Id del user autor",
+  "updated": "Fecha Actualizacion";
+  "created": "Fecha creacion";
   "enabled": "Baja Logica";
 }
 ```
@@ -1072,7 +1368,7 @@ HTTP/1.1 500 Internal Server Error
 
 
 
-	POST /v1/:postId/delete
+	DELETE /v1/:postId/delete
 
 
 
@@ -1098,6 +1394,66 @@ Post
   "pets": [Id de macota etiquetada],
   "user": "Id del user autor",
   "updated": "Fecha Actualizacion";
+  "created": "Fecha creacion";
+  "enabled": "Baja Logica";
+}
+```
+
+
+### Error Response
+
+401 Unauthorized
+
+```
+HTTP/1.1 401 Unauthorized
+```
+500 Server Error
+
+```
+HTTP/1.1 500 Internal Server Error
+{
+   "error" : "Not Found"
+}
+```
+## <a name='dar-like-a-un-post'></a> Dar like a un post
+[Back to top](#top)
+
+
+
+	POST /v1/posts/:postId/like
+
+
+
+
+
+### Parameter Parameters
+
+| Name     | Type       | Description                           |
+|:---------|:-----------|:--------------------------------------|
+|  postId |  | <p>{string} ID del Post</p>|
+### Examples
+
+Header Autorización
+
+```
+Authorization=bearer {token}
+```
+
+
+### Success Response
+
+Post
+
+```
+{
+  "title": "Titulo del Post",
+  "description": "Descripcion del post",
+  "picture": "Imagen del post",
+  "likes": [Id usuario],
+  "pets": [Id de macota etiquetada],
+  "user": "Id del user autor",
+  "updated": "Fecha Actualizacion";
+  "created": "Fecha creacion";
   "enabled": "Baja Logica";
 }
 ```
@@ -1149,8 +1505,183 @@ Post
   "pets": [Id de macota etiquetada],
   "user": "Id del user autor",
   "updated": "Fecha Actualizacion";
+  "created": "Fecha creacion";
   "enabled": "Baja Logica";
 }
+```
+
+
+### Error Response
+
+401 Unauthorized
+
+```
+HTTP/1.1 401 Unauthorized
+```
+500 Server Error
+
+```
+HTTP/1.1 500 Internal Server Error
+{
+   "error" : "Not Found"
+}
+```
+## <a name='obtener-post'></a> Obtener Post
+[Back to top](#top)
+
+
+
+	GET /v1/posts/:postId
+
+
+
+### Examples
+
+Header Autorización
+
+```
+Authorization=bearer {token}
+```
+
+
+### Success Response
+
+Post
+
+```
+{
+  "title": "Titulo del Post",
+  "description": "Descripcion del post",
+  "picture": "Imagen del post",
+  "likes": [Id usuario],
+  "pets": [Id de macota etiquetada],
+  "user": "Id del user autor",
+  "updated": "Fecha Actualizacion";
+  "created": "Fecha creacion";
+  "enabled": "Baja Logica";
+}
+```
+
+
+### Error Response
+
+401 Unauthorized
+
+```
+HTTP/1.1 401 Unauthorized
+```
+500 Server Error
+
+```
+HTTP/1.1 500 Internal Server Error
+{
+   "error" : "Not Found"
+}
+```
+## <a name='obtener-todos-los-posteos-populares'></a> Obtener Todos los Posteos populares
+[Back to top](#top)
+
+<p>Obtiene los posts populares (Con mas de {likes} likes)</p>
+
+	GET /v1/explore?likes=
+
+
+
+
+
+### Parameter Parameters
+
+| Name     | Type       | Description                           |
+|:---------|:-----------|:--------------------------------------|
+|  likes |  | <p>{number} Numero de likes para filtrar posts</p>|
+### Examples
+
+Header Autorización
+
+```
+Authorization=bearer {token}
+```
+
+
+### Success Response
+
+Posts Respuesta
+
+```
+[
+  {
+    "title": "Titulo del Post",
+    "description": "Descripcion del post",
+    "picture": "Imagen del post",
+    "likes": [Id usuario],
+    "pets": [Id de macota etiquetada],
+    "user": "Id del user autor",
+    "updated": "Fecha Actualizacion";
+    "created": "Fecha creacion";
+    "enabled": "Baja Logica";
+  }
+]
+```
+
+
+### Error Response
+
+401 Unauthorized
+
+```
+HTTP/1.1 401 Unauthorized
+```
+500 Server Error
+
+```
+HTTP/1.1 500 Internal Server Error
+{
+   "error" : "Not Found"
+}
+```
+## <a name='obtener-todos-los-posteos-de-un-usuario'></a> Obtener Todos los Posteos de un usuario
+[Back to top](#top)
+
+
+
+	GET /v1/:userId/posts
+
+
+
+
+
+### Parameter Parameters
+
+| Name     | Type       | Description                           |
+|:---------|:-----------|:--------------------------------------|
+|  userId |  | <p>{string} ID del Usuario</p>|
+### Examples
+
+Header Autorización
+
+```
+Authorization=bearer {token}
+```
+
+
+### Success Response
+
+Posts Respuesta
+
+```
+[
+  {
+    "title": "Titulo del Post",
+    "description": "Descripcion del post",
+    "picture": "Imagen del post",
+    "likes": [Id usuario],
+    "pets": [Id de macota etiquetada],
+    "user": "Id del user autor",
+    "updated": "Fecha Actualizacion";
+    "created": "Fecha creacion";
+    "enabled": "Baja Logica";
+  }
+]
 ```
 
 
@@ -1189,19 +1720,22 @@ Authorization=bearer {token}
 
 ### Success Response
 
-Post
+Posts Respuesta
 
 ```
-{
-  "title": "Titulo del Post",
-  "description": "Descripcion del post",
-  "picture": "Imagen del post",
-  "likes": [Id usuario],
-  "pets": [Id de macota etiquetada],
-  "user": "Id del user autor",
-  "updated": "Fecha Actualizacion";
-  "enabled": "Baja Logica";
-}
+[
+  {
+    "title": "Titulo del Post",
+    "description": "Descripcion del post",
+    "picture": "Imagen del post",
+    "likes": [Id usuario],
+    "pets": [Id de macota etiquetada],
+    "user": "Id del user autor",
+    "updated": "Fecha Actualizacion";
+    "created": "Fecha creacion";
+    "enabled": "Baja Logica";
+  }
+]
 ```
 
 
@@ -1225,7 +1759,7 @@ HTTP/1.1 500 Internal Server Error
 
 
 
-	GET /v1/myPosts
+	GET /v1/allPosts
 
 
 
@@ -1240,19 +1774,22 @@ Authorization=bearer {token}
 
 ### Success Response
 
-Post
+Posts Respuesta
 
 ```
-{
-  "title": "Titulo del Post",
-  "description": "Descripcion del post",
-  "picture": "Imagen del post",
-  "likes": [Id usuario],
-  "pets": [Id de macota etiquetada],
-  "user": "Id del user autor",
-  "updated": "Fecha Actualizacion";
-  "enabled": "Baja Logica";
-}
+[
+  {
+    "title": "Titulo del Post",
+    "description": "Descripcion del post",
+    "picture": "Imagen del post",
+    "likes": [Id usuario],
+    "pets": [Id de macota etiquetada],
+    "user": "Id del user autor",
+    "updated": "Fecha Actualizacion";
+    "created": "Fecha creacion";
+    "enabled": "Baja Logica";
+  }
+]
 ```
 
 
@@ -1282,6 +1819,17 @@ HTTP/1.1 500 Internal Server Error
 
 ### Examples
 
+Post
+
+```
+{
+  "title": "Titulo del Post",
+  "description": "Descripcion del Post",
+  "picture": "Imagen del post (base64)",
+  "pets": [Id mascota Etiquetada],
+  "user": "Id del usuario que postea"
+}
+```
 Header Autorización
 
 ```
@@ -1302,6 +1850,7 @@ Post
   "pets": [Id de macota etiquetada],
   "user": "Id del user autor",
   "updated": "Fecha Actualizacion";
+  "created": "Fecha creacion";
   "enabled": "Baja Logica";
 }
 ```
@@ -1313,6 +1862,20 @@ Post
 
 ```
 HTTP/1.1 401 Unauthorized
+```
+400 Bad Request
+
+```
+HTTP/1.1 400 Bad Request
+{
+   "messages" : [
+     {
+       "path" : "{Nombre de la propiedad}",
+       "message" : "{Motivo del error}"
+     },
+     ...
+  ]
+}
 ```
 500 Server Error
 
@@ -1879,7 +2442,9 @@ HTTP/1.1 200 OK
    "login": "{Login de usuario}",
    "permissions": [
        "{Permission}"
-   ]
+   ],
+   "following": "{Users Seguidos}",
+   "profile": "{Perfil de Usuario}"
 }
 ```
 

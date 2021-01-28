@@ -277,7 +277,9 @@ async function getAll(req: ISessionRequest, res: express.Response) {
  *        "login": "{Login de usuario}",
  *        "permissions": [
  *            "{Permission}"
- *        ]
+ *        ],
+ *        "following": "{Users Seguidos}",
+ *        "profile": "{Perfil de Usuario}"
  *     }
  *
  * @apiUse AuthHeader
@@ -285,7 +287,7 @@ async function getAll(req: ISessionRequest, res: express.Response) {
  */
 async function current(req: ISessionRequest, res: express.Response) {
   const response = await user.findById(req.user.user_id);
-  const profileId = (await profileService.findForUser(req.user.user_id))._id
+  const profileId = (await profileService.read(req.user.user_id))._id
   return res.json({
     id: response.id,
     name: response.name,

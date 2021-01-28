@@ -88,8 +88,29 @@ export async function findPostByLikeAmount(likes: number): Promise<IPost[]> {
     }
 }
 
+async function validateBody(body:any){
+    const result: error.ValidationErrorMessage = {
+        messages: []
+      };
+    
+      if (body.title.length < 2) {
+        result.messages.push({ path: "name", message: "El titulo no puede tener menos de 2 caracteres" });
+      }
+    
+      if (body.description && body.description.length > 2014) {
+        result.messages.push({ path: "description", message: "La descripcion no puede contener mas de 2014 caracteres solamente." });
+      }
+    
+      if (result.messages.length > 0) {
+        return Promise.reject(result);
+      }
+      
+      return Promise.resolve(body);
+}
+
 export async function publish(body: newPost): Promise<IPost> {
     try {
+        body = await validateBody(body)
         if(body.picture){
             body.picture = (await imageService.create({image: body.picture})).id
         }
@@ -110,6 +131,7 @@ export async function publish(body: newPost): Promise<IPost> {
 
 export async function updatePost(body: newPost, postId: string): Promise<IPost> {
     try {
+        body = await validateBody(body)
         const post = await Post.findOne({ 
             _id: postId, 
             user: mongoose.Types.ObjectId.createFromHexString(body.user_id)

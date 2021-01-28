@@ -167,7 +167,7 @@ export async function findProfileByQueryName(searchParameter: string, userId: st
         if(perfil.picture){
           perfil.picture = (await imageService.findByID(perfil.picture)).image
         } else {
-          perfil.picture = "/assets/default_profile.png";
+          perfil.picture = "/assets/default_profile_image.jpg";
         }
       }
       

@@ -6,6 +6,7 @@ import * as env from "../server/environment";
 import * as error from "../server/error";
 import { IUser, User } from "./user";
 import * as mongoose  from "mongoose";
+import { Profile } from "../profile/schema";
 
 const conf = env.getConfig(process.env);
 
@@ -27,9 +28,15 @@ export async function register(signUpRequest: SignUpRequest): Promise<string> {
         user.login = body.login;
         user.permissions = ["user"];
         user.setStringPassword(body.password);
+        //Creamos perfil para el usuario
+        const profile = new Profile()
+        profile.name = user.name
+        profile.user = user._id
 
         // Then save the user
         await user.save();
+        //Guardamos Perfil
+        await profile.save();
         return Promise.resolve(user._id.toHexString());
     } catch (err) {
         return Promise.reject(err);

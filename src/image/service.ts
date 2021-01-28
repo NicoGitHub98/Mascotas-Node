@@ -21,7 +21,7 @@ export async function findByID(id: string): Promise<IImage> {
   try {
     const reply = await redisClient.get(escape(id));
     if (!reply) {
-      throw {code: error.ERROR_NOT_FOUND, mesage: "La imagen no se pudo encontrar en la BD" };
+      throw {code: error.ERROR_NOT_FOUND, message: "La imagen no se pudo encontrar en la BD" };
     }
     return Promise.resolve({
       id: escape(id),
