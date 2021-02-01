@@ -114,3 +114,18 @@ export async function remove(userId: string, petId: string): Promise<void> {
     return Promise.reject(err);
   }
 }
+
+export async function getPetsByUserId(userId: string): Promise<any> {
+  try {
+    const pets = await Pet.find({
+      user: mongoose.Types.ObjectId(userId),
+      enabled: true
+    }).exec();
+    if (!pets) {
+      throw error.ERROR_NOT_FOUND;
+    }
+    return Promise.resolve(pets);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+}

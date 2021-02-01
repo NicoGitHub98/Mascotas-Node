@@ -1245,7 +1245,7 @@ Post
   "title": "Titulo del Post",
   "description": "Descripcion del Post",
   "picture": "Imagen del post (base64)",
-  "pets": [Id mascota Etiquetada],
+  "pets": ["Id mascota Etiquetada"],
   "user": "Id del usuario que postea"
 }
 ```
@@ -1265,8 +1265,8 @@ Post
   "title": "Titulo del Post",
   "description": "Descripcion del post",
   "picture": "Imagen del post",
-  "likes": [Id usuario],
-  "pets": [Id de macota etiquetada],
+  "likes": ["Id usuario"],
+  "pets": ["Id de macota etiquetada"],
   "user": "Id del user autor",
   "updated": "Fecha Actualizacion";
   "created": "Fecha creacion";
@@ -1338,8 +1338,8 @@ Post
   "title": "Titulo del Post",
   "description": "Descripcion del post",
   "picture": "Imagen del post",
-  "likes": [Id usuario],
-  "pets": [Id de macota etiquetada],
+  "likes": ["Id usuario"],
+  "pets": ["Id de macota etiquetada"],
   "user": "Id del user autor",
   "updated": "Fecha Actualizacion";
   "created": "Fecha creacion";
@@ -1390,8 +1390,8 @@ Post
   "title": "Titulo del Post",
   "description": "Descripcion del post",
   "picture": "Imagen del post",
-  "likes": [Id usuario],
-  "pets": [Id de macota etiquetada],
+  "likes": ["Id usuario"],
+  "pets": ["Id de macota etiquetada"],
   "user": "Id del user autor",
   "updated": "Fecha Actualizacion";
   "created": "Fecha creacion";
@@ -1449,8 +1449,8 @@ Post
   "title": "Titulo del Post",
   "description": "Descripcion del post",
   "picture": "Imagen del post",
-  "likes": [Id usuario],
-  "pets": [Id de macota etiquetada],
+  "likes": ["Id usuario"],
+  "pets": ["Id de macota etiquetada"],
   "user": "Id del user autor",
   "updated": "Fecha Actualizacion";
   "created": "Fecha creacion";
@@ -1501,8 +1501,8 @@ Post
   "title": "Titulo del Post",
   "description": "Descripcion del post",
   "picture": "Imagen del post",
-  "likes": [Id usuario],
-  "pets": [Id de macota etiquetada],
+  "likes": ["Id usuario"],
+  "pets": ["Id de macota etiquetada"],
   "user": "Id del user autor",
   "updated": "Fecha Actualizacion";
   "created": "Fecha creacion";
@@ -1553,8 +1553,8 @@ Post
   "title": "Titulo del Post",
   "description": "Descripcion del post",
   "picture": "Imagen del post",
-  "likes": [Id usuario],
-  "pets": [Id de macota etiquetada],
+  "likes": ["Id usuario"],
+  "pets": ["Id de macota etiquetada"],
   "user": "Id del user autor",
   "updated": "Fecha Actualizacion";
   "created": "Fecha creacion";
@@ -1846,8 +1846,8 @@ Post
   "title": "Titulo del Post",
   "description": "Descripcion del post",
   "picture": "Imagen del post",
-  "likes": [Id usuario],
-  "pets": [Id de macota etiquetada],
+  "likes": ["Id usuario"],
+  "pets": ["Id de macota etiquetada"],
   "user": "Id del user autor",
   "updated": "Fecha Actualizacion";
   "created": "Fecha creacion";

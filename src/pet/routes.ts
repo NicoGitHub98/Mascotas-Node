@@ -24,6 +24,8 @@ export function initModule(app: express.Express) {
   app
     .route("/v1/pets/:petId")
     .get(onlyLoggedIn,getById)
+  
+  app.route("/v1/:userId/pets").get(onlyLoggedIn,getPetsOfUser)
 }
 
 
@@ -190,4 +192,22 @@ async function updateById(req: ISessionRequest, res: express.Response) {
 async function removeById(req: ISessionRequest, res: express.Response) {
   await service.remove(req.user.user_id, req.params.petId);
   res.send();
+}
+
+/**
+ * @api {get} /v1/:userId/pets Buscar Mascotas de Usuario
+ * @apiName Buscar Mascotas de Usuario
+ * @apiGroup Mascotas
+ *
+ * @apiDescription Busca las mascota por id de usuario.
+ *
+ * @apiUse IMascotaResponse
+ *
+ * @apiUse AuthHeader
+ * @apiUse ParamValidationErrors
+ * @apiUse OtherErrors
+ */
+async function getPetsOfUser(req: ISessionRequest, res: express.Response) {
+  const result = await service.getPetsByUserId(req.params.userId);
+  res.send(result);
 }
