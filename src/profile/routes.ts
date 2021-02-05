@@ -181,7 +181,6 @@ async function findProfileByName(req: ISessionRequest, res: express.Response) {
  * @apiUse AuthHeader
  * @apiUse OtherErrors
  */
-
 async function getProfileByUserId(req: ISessionRequest, res: express.Response) {
   const profile = await profileService.findForUser(req.params.userId);
   res.json(profile);

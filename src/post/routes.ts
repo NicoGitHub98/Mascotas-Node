@@ -50,7 +50,6 @@ export function initModule(app: express.Express) {
  * @apiUse OtherErrors
  * 
  */
-
 async function getAllPosts(req: ISessionRequest, res: express.Response) {
   const result = await postService.findAll();
   res.json({

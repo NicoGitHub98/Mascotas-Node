@@ -188,7 +188,6 @@ async function updateById(req: ISessionRequest, res: express.Response) {
  * @apiUse 200OK
  * @apiUse OtherErrors
  */
-
 async function removeById(req: ISessionRequest, res: express.Response) {
   await service.remove(req.user.user_id, req.params.petId);
   res.send();
