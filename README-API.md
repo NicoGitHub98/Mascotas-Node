@@ -25,6 +25,7 @@ Microservicio de Autentificación
 	- [Guardar Imagen de Perfil](#guardar-imagen-de-perfil)
 	- [Obtener Perfil](#obtener-perfil)
 	- [Obtener Perfil por id de usuario](#obtener-perfil-por-id-de-usuario)
+	- [Obtener Perfiles de seguidos](#obtener-perfiles-de-seguidos)
 	- [Obtener mi Perfil](#obtener-mi-perfil)
 	
 - [Provincias](#provincias)
@@ -966,6 +967,75 @@ Perfil Ejemplo
   "email": "Email",
   "address": "Dirección",
   "province": "Id de provincia",
+}
+```
+Header Autorización
+
+```
+Authorization=bearer {token}
+```
+
+
+### Success Response
+
+Perfil Respuesta
+
+```
+{
+  "name": "Nombre y Apellido",
+  "phone": "Teléfono",
+  "email": "Email",
+  "address": "Dirección",
+  "picture": "Id de imagen",
+  "province": "Id de provincia",
+}
+```
+
+
+### Error Response
+
+401 Unauthorized
+
+```
+HTTP/1.1 401 Unauthorized
+```
+500 Server Error
+
+```
+HTTP/1.1 500 Internal Server Error
+{
+   "error" : "Not Found"
+}
+```
+## <a name='obtener-perfiles-de-seguidos'></a> Obtener Perfiles de seguidos
+[Back to top](#top)
+
+<p>Obtiene perfiles cuyo usuarios estan siendo seguidos</p>
+
+	GET /v1/profiles/:userId
+
+
+
+
+
+### Parameter Parameters
+
+| Name     | Type       | Description                           |
+|:---------|:-----------|:--------------------------------------|
+|  id | String[] | <p>IDs de Usuario</p>|
+### Examples
+
+Perfil Ejemplo
+
+```
+{
+  name: 'Nombre de Perfil',
+     phone: 'Telefono',
+     email: 'Email',
+     address: 'Direccion',
+     picture: 'Imagen',
+     _id: "ID del perfil",
+     user: "ID del usuario",
 }
 ```
 Header Autorización

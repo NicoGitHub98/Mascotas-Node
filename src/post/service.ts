@@ -50,12 +50,8 @@ export async function findById(postId: string): Promise<IPost> {
 export async function findAllByUserId(userId: string): Promise<IPost[]> {
     try {
         const posts = await Post.find({ user: mongoose.Types.ObjectId.createFromHexString(userId), enabled: true}).exec();
-        if (!posts) {
-            console.log("No hay posts")
-        }
         return Promise.resolve(posts);
     } catch (err) {
-        console.log("Error en findAllByUserId:",err)
         return Promise.reject(err);
     }
 }
@@ -63,7 +59,7 @@ export async function findAllByUserId(userId: string): Promise<IPost[]> {
 export async function findMyFeedPosts(userId: string): Promise<IPost[]> {
     try {
         const following = await userService.getFollowing(userId);
-        const posts = await Post.find({ user: { $in: following}, enabled: true}).exec();
+        const posts = await Post.find({ user: { $in: following}, enabled: true}).sort('-created').exec();
         if (!posts) {
             throw error.ERROR_NOT_FOUND;
         }
@@ -76,8 +72,7 @@ export async function findMyFeedPosts(userId: string): Promise<IPost[]> {
 
 export async function findPostByLikeAmount(likes: number): Promise<IPost[]> {
     try {
-        const posts = await Post.find({ "likesQuantity": {"$gt": likes}, enabled: true }).exec();
-        console.log("Los posts populares son: ",posts)
+        const posts = await Post.find({ "likesQuantity": {"$gte": likes}, enabled: true }).sort('-created').exec();
         if (!posts) {
             throw error.ERROR_NOT_FOUND;
         }

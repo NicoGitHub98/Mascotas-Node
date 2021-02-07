@@ -197,15 +197,17 @@ async function getProfileByUserId(req: ISessionRequest, res: express.Response) {
  * @apiParam {String[]} id IDs de Usuario
  * 
  * @apiExample {json} Perfil Ejemplo
- *    {
+ *    [
+ *      {
  *      name: 'Nombre de Perfil',
-        phone: 'Telefono',
-        email: 'Email',
-        address: 'Direccion',
-        picture: 'Imagen',
-        _id: "ID del perfil",
-        user: "ID del usuario",
- *    }
+ *      phone: 'Telefono',
+ *      email: 'Email',
+ *      address: 'Direccion',
+ *      picture: 'Imagen',
+ *      _id: "ID del perfil",
+ *      user: "ID del usuario",
+ *      }
+ *    ]
  *
  * @apiUse IProfileResponse
  *
@@ -214,6 +216,5 @@ async function getProfileByUserId(req: ISessionRequest, res: express.Response) {
  */
 async function getProfilesByFollowing(req: ISessionRequest, res: express.Response) {
   const profiles = await profileService.findForUsers(req.body.users);
-  console.log(profiles)
   res.json(profiles);
 }
