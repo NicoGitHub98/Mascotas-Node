@@ -20,6 +20,8 @@ export function initModule(app: express.Express) {
 
   app.route("/v1/profiles/:userId").get(onlyLoggedIn, getProfileByUserId)
 
+  app.route("/v1/profiles/following").post(onlyLoggedIn, getProfilesByFollowing)
+
 }
 
 /**
@@ -184,4 +186,34 @@ async function findProfileByName(req: ISessionRequest, res: express.Response) {
 async function getProfileByUserId(req: ISessionRequest, res: express.Response) {
   const profile = await profileService.findForUser(req.params.userId);
   res.json(profile);
+}
+
+/**
+ * @api {get} /v1/profiles/:userId Obtener Perfiles de seguidos
+ * @apiName Obtener Perfiles por UserID de seguidos
+ * @apiGroup Perfil
+ *
+ * @apiDescription Obtiene perfiles cuyo usuarios estan siendo seguidos
+ * @apiParam {String[]} id IDs de Usuario
+ * 
+ * @apiExample {json} Perfil Ejemplo
+ *    {
+ *      name: 'Nombre de Perfil',
+        phone: 'Telefono',
+        email: 'Email',
+        address: 'Direccion',
+        picture: 'Imagen',
+        _id: "ID del perfil",
+        user: "ID del usuario",
+ *    }
+ *
+ * @apiUse IProfileResponse
+ *
+ * @apiUse AuthHeader
+ * @apiUse OtherErrors
+ */
+async function getProfilesByFollowing(req: ISessionRequest, res: express.Response) {
+  const profiles = await profileService.findForUsers(req.body.users);
+  console.log(profiles)
+  res.json(profiles);
 }

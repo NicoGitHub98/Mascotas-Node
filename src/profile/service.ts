@@ -188,3 +188,14 @@ export async function findProfileById(profileId: string): Promise<IProfile> {
     return Promise.reject(error)
   }
 }
+
+export async function findForUsers(usersId: any[]): Promise<IProfile[]> {
+  const profiles = await Profile.find({
+    user: {$in: usersId},
+    enabled: true
+  });
+  for (const profile of profiles) {
+    if(profile.picture) profile.picture = (await imageService.findByID(profile.picture)).image
+  }
+  return profiles
+}
