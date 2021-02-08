@@ -16,11 +16,10 @@ export async function findByCurrentUser(userId: string): Promise<Array<IPet>> {
   }
 }
 
-export async function getById(petId: string): Promise<IPet> {
+export async function getByIdForPost(petsIds: string[]): Promise<IPet[]> {
   try {
-    const result = await Pet.findOne({
-      _id: petId,
-      enabled: true
+    const result = await Pet.find({
+      _id: {$in: petsIds},
     }).exec();
     if (!result) {
       throw error.ERROR_NOT_FOUND;

@@ -119,7 +119,11 @@ async function updateBasicInfo(req: ISessionRequest, res: express.Response) {
 async function seeProfile(req: ISessionRequest, res: express.Response) {
   const profile = await profileService.findProfileById(req.params.profileId);
   const posts = await postService.findAllByUserId(profile.user.toString());
-  if(profile.picture)  profile.picture = (await imageService.findByID(profile.picture)).image
+  try {
+    if(profile.picture)  profile.picture = (await imageService.findByID(profile.picture)).image
+  } catch (error) {
+    console.log("Error: ",error)
+  }
   res.json({
     name: profile.name,
     phone: profile.phone,

@@ -89,7 +89,12 @@ async function myPosts(req: ISessionRequest, res: express.Response) {
 async function getMyFeed(req: ISessionRequest, res: express.Response) {
     const result = await postService.findMyFeedPosts(req.user.user_id);
     for (const post of result) {
-      if(post.picture) post.picture = (await imageService.findByID(post.picture)).image
+      console.log("Del post: ",post)
+      try {
+        if(post.picture) post.picture = (await imageService.findByID(post.picture)).image
+      } catch (error) {
+        console.log("Error al conseguir Imagen: ",error)
+      }
     }
     res.json(result);
 }
@@ -161,7 +166,13 @@ async function publish(req: ISessionRequest, res: express.Response) {
  */
 async function getById(req: ISessionRequest, res: express.Response) {
   const result = await postService.findById(req.params.postId);
-  const imagen = (await imageService.findByID(result.picture)).image
+  let imagen;
+  try {
+    if(result.picture) imagen = (await imageService.findByID(result.picture)).image
+  } catch (error) {
+    console.log("Error: ",error)
+  }
+
   res.json({
     id: result._id,
     title: result.title,
@@ -309,7 +320,11 @@ async function getPostsOfUser(req: ISessionRequest, res: express.Response) {
   const result = await postService.findAllByUserId(req.params.userId);
   for (const post of result) {
     if(post.picture){
-      post.picture = (await imageService.findByID(post.picture)).image
+      try {
+        post.picture = (await imageService.findByID(post.picture)).image
+      } catch (error) {
+        console.log("Error: ",error)
+      }
     } 
   }
   res.json(result);
@@ -332,7 +347,11 @@ async function getPopularPosts(req: ISessionRequest, res: express.Response) {
   const result = await postService.findPostByLikeAmount(Math.abs(parseInt(req.query.likes.toString())));
   for (const post of result) {
     if(post.picture){
-      post.picture = (await imageService.findByID(post.picture)).image
+      try {
+        post.picture = (await imageService.findByID(post.picture)).image
+      } catch (error) {
+        console.log("Error: ",error)
+      }
     } 
   }
   res.json(result);

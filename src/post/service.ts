@@ -63,9 +63,9 @@ export async function findMyFeedPosts(userId: string): Promise<IPost[]> {
         if (!posts) {
             throw error.ERROR_NOT_FOUND;
         }
-
         return Promise.resolve(posts);
     } catch (err) {
+        console.log("Entra aca: ", err)
         return Promise.reject(err);
     }
 }
@@ -133,6 +133,8 @@ export async function updatePost(body: newPost, postId: string): Promise<IPost> 
             enabled: true
         }).exec();
 
+        if(post == null) throw {code: 404, msg:"No se encontro un post asociado a ese usuario"}
+
         if(body.picture){
             body.picture = (await imageService.create({image: body.picture})).id
             post.picture = body.picture;
@@ -151,6 +153,7 @@ export async function updatePost(body: newPost, postId: string): Promise<IPost> 
         await post.save();
         return Promise.resolve(post);
     } catch (err) {
+        console.log(err)
         return Promise.reject(err);
     }
 }

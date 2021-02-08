@@ -22,8 +22,8 @@ export function initModule(app: express.Express) {
     .post(onlyLoggedIn, updateById)
     .delete(onlyLoggedIn, removeById);
   app
-    .route("/v1/pets/:petId")
-    .get(onlyLoggedIn,getById)
+    .route("/v1/pets/from-post")
+    .post(onlyLoggedIn,getByIdForPost)
   
   app.route("/v1/:userId/pets").get(onlyLoggedIn,getPetsOfUser)
 }
@@ -113,14 +113,9 @@ async function create(req: ISessionRequest, res: express.Response) {
  * @apiUse ParamValidationErrors
  * @apiUse OtherErrors
  */
-async function getById(req: ISessionRequest, res: express.Response) {
-  const result = await service.getById(req.params.petId);
-  res.json({
-    id: result.id,
-    name: result.name,
-    description: result.description,
-    birthDate: result.birthDate
-  });
+async function getByIdForPost(req: ISessionRequest, res: express.Response) {
+  const result = await service.getByIdForPost(req.body.pets);
+  res.json(result);
 }
 
 /**

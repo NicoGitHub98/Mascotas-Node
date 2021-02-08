@@ -1028,15 +1028,17 @@ HTTP/1.1 500 Internal Server Error
 Perfil Ejemplo
 
 ```
-{
+[
+  {
   name: 'Nombre de Perfil',
-     phone: 'Telefono',
-     email: 'Email',
-     address: 'Direccion',
-     picture: 'Imagen',
-     _id: "ID del perfil",
-     user: "ID del usuario",
-}
+  phone: 'Telefono',
+  email: 'Email',
+  address: 'Direccion',
+  picture: 'Imagen',
+  _id: "ID del perfil",
+  user: "ID del usuario",
+  }
+]
 ```
 Header Autorización
 
