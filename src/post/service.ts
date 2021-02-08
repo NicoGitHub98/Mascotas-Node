@@ -49,7 +49,7 @@ export async function findById(postId: string): Promise<IPost> {
 
 export async function findAllByUserId(userId: string): Promise<IPost[]> {
     try {
-        const posts = await Post.find({ user: mongoose.Types.ObjectId.createFromHexString(userId), enabled: true}).exec();
+        const posts = await Post.find({ user: mongoose.Types.ObjectId.createFromHexString(userId), enabled: true}).sort('-created').exec();
         return Promise.resolve(posts);
     } catch (err) {
         return Promise.reject(err);
