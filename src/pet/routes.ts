@@ -101,11 +101,11 @@ async function create(req: ISessionRequest, res: express.Response) {
 
 
 /**
- * @api {get} /v1/pet/:petId Buscar Mascota
- * @apiName Buscar Mascota
+ * @api {get} /v1/pets/from-post Buscar Mascotas de un Post
+ * @apiName Buscar Mascotas de Post
  * @apiGroup Mascotas
  *
- * @apiDescription Busca una mascota por id.
+ * @apiDescription Busca las mascota de un post.
  *
  * @apiUse IMascotaResponse
  *

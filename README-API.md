@@ -14,6 +14,7 @@ Microservicio de Autentificación
 - [Mascotas](#mascotas)
 	- [Actualizar Mascota](#actualizar-mascota)
 	- [Buscar Mascota](#buscar-mascota)
+	- [Buscar Mascotas de un Post](#buscar-mascotas-de-un-post)
 	- [Buscar Mascotas de Usuario](#buscar-mascotas-de-usuario)
 	- [Crear Mascota](#crear-mascota)
 	- [Eliminar Mascota](#eliminar-mascota)
@@ -383,6 +384,67 @@ HTTP/1.1 500 Internal Server Error
 <p>Busca una mascota por id.</p>
 
 	GET /v1/pet/:petId
+
+
+
+### Examples
+
+Header Autorización
+
+```
+Authorization=bearer {token}
+```
+
+
+### Success Response
+
+Mascota
+
+```
+{
+  "id": "Id de mascota",
+  "name": "Nombre de la mascota",
+  "description": "Descripción de la mascota",
+  "birthDate": date (DD/MM/YYYY),
+}
+```
+
+
+### Error Response
+
+401 Unauthorized
+
+```
+HTTP/1.1 401 Unauthorized
+```
+400 Bad Request
+
+```
+HTTP/1.1 400 Bad Request
+{
+   "messages" : [
+     {
+       "path" : "{Nombre de la propiedad}",
+       "message" : "{Motivo del error}"
+     },
+     ...
+  ]
+}
+```
+500 Server Error
+
+```
+HTTP/1.1 500 Internal Server Error
+{
+   "error" : "Not Found"
+}
+```
+## <a name='buscar-mascotas-de-un-post'></a> Buscar Mascotas de un Post
+[Back to top](#top)
+
+<p>Busca las mascota de un post.</p>
+
+	GET /v1/pets/from-post
 
 
 
